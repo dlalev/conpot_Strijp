@@ -28,9 +28,12 @@ RUN mkdir -p /var/log/conpot/ \
     && mkdir -p /data/tftp/ \
     && chown conpot:conpot /var/log/conpot \
     && chown conpot:conpot -R /data
+RUN mkdir -p /etc/conpot/ && chown conpot:conpot /etc/conpot
+ADD --chown=conpot:conpot conpot/templates/strijp_IEC104/ /etc/conpot/
+
 
 USER conpot
 WORKDIR /home/conpot
 ENV USER=conpot
 ENTRYPOINT ["/home/conpot/.local/bin/conpot"]
-CMD ["--template", "default", "--logfile", "/var/log/conpot/conpot.log", "-f", "--temp_dir", "/tmp" ]
+CMD ["--config", "/etc/conpot/conpot.cfg", "--template", "strijp_IEC104", "--logfile", "/var/log/conpot/conpot.log", "--temp_dir", "/tmp", "-f"]
